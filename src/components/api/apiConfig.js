@@ -18,9 +18,7 @@ export default {
                 this.$store.commit('showErrorMessage', 'Ops! Houve um problema ao enviar a requisição');
             });
 
-            apiInstance.interceptors.response.use((response) => {
-                return response;
-            }, () => {
+            apiInstance.interceptors.response.use(response => response, () => {
                 this.$store.commit('showErrorMessage', 'Ops! Houve um problema com a sua requisição.');
             });
         },
