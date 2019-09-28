@@ -40,10 +40,11 @@
                 this.$router.push('/book');
             },
             goToCollection() {
-                this.$router.push('/collection'); // TODO rota nao existe ainda
+                this.$router.push('/library');
             },
             logout() {
                 this.$store.commit('setAuthToken', '');
+                this.$store.commit('setUserId', '');
                 this.$router.push('/');
             },
         },

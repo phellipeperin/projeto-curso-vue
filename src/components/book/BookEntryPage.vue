@@ -1,89 +1,24 @@
 <template>
     <v-container fluid>
-        <v-row justify="end">
-            <v-col
-                cols="12"
-                md="2"
-            >
-                <v-btn
-                    text
-                    block
-                    @click="goBack"
-                >
-                    Voltar
-                </v-btn>
-            </v-col>
-        </v-row>
+        <back-button />
+
         <v-row v-if="book && book.volumeInfo">
             <v-col
-                v-if="book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail"
                 cols="12"
                 md="3"
                 class="text-center"
             >
-                <img :src="book.volumeInfo.imageLinks.thumbnail" >
+                <book-entry-image :book="book" />
             </v-col>
+
             <v-col
                 cols="12"
                 md="9"
             >
-                <h4 class="display-1">{{ book.volumeInfo.title }}</h4>
-                <h5 class="headline">{{ book.volumeInfo.subtitle || 'Sem descrição' }}</h5>
-
-                <p class="mt-2">{{ book.volumeInfo.description }}</p>
-                <!-- <p v-html="book.volumeInfo.description" /> -->
-
-                <div v-if="book.volumeInfo.authors && book.volumeInfo.authors.length">
-                    <v-subheader>Autores</v-subheader>
-                    <v-divider class="mb-2" />
-
-                    <v-chip
-                        v-for="(author, i) in book.volumeInfo.authors"
-                        :key="i"
-                        pill
-                        class="mr-3"
-                    >
-                        <v-avatar
-                            left
-                            color="primary white--text"
-                        >
-                            {{ author.substring(0, 1) }}
-                        </v-avatar>
-                        {{ author }}
-                    </v-chip>
-                </div>
-
-                <div
-                    v-if="book.volumeInfo.categories && book.volumeInfo.categories.length"
-                    class="mt-4"
-                >
-                    <v-subheader>Categorias</v-subheader>
-                    <v-divider class="mb-2" />
-
-                    <v-chip
-                        v-for="(category, i) in book.volumeInfo.categories"
-                        :key="i"
-                        class="mr-3"
-                    >
-                        {{ category }}
-                    </v-chip>
-                </div>
-
-                <div
-                    v-if="book.volumeInfo.previewLink"
-                    class="mt-4"
-                >
-                    <v-subheader>Ações</v-subheader>
-                    <v-divider class="mb-2" />
-
-                    <v-btn
-                        text
-                        color="primary"
-                        @click="goToPreview(book)"
-                    >
-                        Ver Preview
-                    </v-btn>
-                </div>
+                <book-entry-data :book="book" />
+                <book-entry-authors :book="book" />
+                <book-entry-categories :book="book" />
+                <book-entry-actions :book="book" />
             </v-col>
         </v-row>
     </v-container>
@@ -93,8 +28,23 @@
     import api from '../api/api';
     import bookService from './bookService';
 
+    import BackButton from '../navigation/BackButton.vue';
+    import BookEntryImage from './BookEntryImage.vue';
+    import BookEntryData from './BookEntryData.vue';
+    import BookEntryAuthors from './BookEntryAuthors.vue';
+    import BookEntryCategories from './BookEntryCategories.vue';
+    import BookEntryActions from './BookEntryActions.vue';
+
     export default {
         name: 'BookEntryPage',
+        components: {
+            BookEntryActions,
+            BookEntryCategories,
+            BookEntryAuthors,
+            BookEntryData,
+            BookEntryImage,
+            BackButton,
+        },
         mixins: [api, bookService],
         data() {
             return {
@@ -105,11 +55,6 @@
             this.get(`/volumes/${this.$route.params.id}`).then((response) => {
                 this.book = response.data;
             });
-        },
-        methods: {
-            goBack() {
-                this.$router.push('/book');
-            },
         },
     };
 </script>

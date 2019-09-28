@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         authToken: '',
+        userId: '',
         logged: false,
         message: {
             text: '',
@@ -17,6 +18,10 @@ export default new Vuex.Store({
             window.localStorage.authToken = payload;
             state.authToken = payload;
             state.logged = Boolean(state.authToken);
+        },
+        setUserId(state, payload) {
+            window.localStorage.userId = payload;
+            state.userId = payload;
         },
         setLogged(state, payload) {
             state.logged = payload;

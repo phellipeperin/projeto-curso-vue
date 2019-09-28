@@ -15,7 +15,9 @@
                 md="4"
                 class="text-center"
             >
-                <p class="overline">Digite algo para iniciar a pesquisa, ou pesquisa alguma outra coisa.</p>
+                <p class="overline">
+                    Digite algo para iniciar a pesquisa, ou pesquisa alguma outra coisa.
+                </p>
             </v-col>
         </v-row>
 
@@ -59,6 +61,8 @@
 
                     this.get(`/volumes?q=${textSearch}`).then((response) => {
                         this.bookList = response.data.items;
+                        this.searchOnGoing = false;
+                    }).catch(() => {
                         this.searchOnGoing = false;
                     });
                 } else {
